@@ -18,7 +18,7 @@ import React.DOM as R
 import React.DOM.Props as RP
 -- import ReactDOM as RDOM
 
-data Action = Increment | Decrement
+data Action = Increment | Decrement | Reset
 
 type State = { counter :: Int }
 
@@ -32,12 +32,18 @@ render send _ state _ =
                     [ R.text "Increment" ]
          , R.button [ RP.onClick \_ -> send Decrement ]
                     [ R.text "Decrement" ]
+         , R.button [ RP.onClick \_ -> send Reset ]
+                    [ R.text "Reset" ]
          ]
   ]
 
 performAction :: T.PerformAction _ State _ Action
-performAction Increment _ _ = void (T.cotransform (\state -> state { counter = state.counter + 1 }))
-performAction Decrement _ _ = void (T.cotransform (\state -> state { counter = state.counter - 1 }))
+performAction Increment _ _ = 
+  void (T.cotransform (\state -> state { counter = state.counter + 1 }))
+performAction Decrement _ _ = 
+  void (T.cotransform (\state -> state { counter = state.counter - 1 }))
+performAction Reset _ _ =
+  void (T.cotransform (\state -> state { counter = 0 }))
 
 spec :: T.Spec _ State _ Action
 spec = T.simpleSpec performAction render
