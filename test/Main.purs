@@ -17,13 +17,14 @@ import Thermite as T
 import React.DOM as R
 import React.DOM.Props as RP
 -- import ReactDOM as RDOM
+import Data.String as DS
 
 data Action = Increment | Decrement | Reset
 
-type State = { counter :: Int }
+type State = { counter :: Int, infoItems :: Array String }
 
 initialState :: State
-initialState = { counter : 0 }
+initialState = { counter : 0, infoItems : ["test", "123"] }
 
 render :: T.Render State _ Action
 render send _ state _ =
@@ -34,6 +35,11 @@ render send _ state _ =
                     [ R.text "Decrement" ]
          , R.button [ RP.onClick \_ -> send Reset ]
                     [ R.text "Reset" ]
+         ]
+  , R.p' [ 
+          -- R.text (show state.infoItems) 
+          -- R.text $ show state.infoItems
+            R.text $ DS.joinWith "" state.infoItems
          ]
   ]
 
